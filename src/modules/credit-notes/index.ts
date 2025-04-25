@@ -5,6 +5,7 @@ import { getCreditNotes } from "./getCreditNotes";
 import { getCreditNote } from "./getCreditNote";
 import { downloadCreditNotePDF } from "./downloadCreditNotePDF";
 import { downloadCreditNoteXML } from "./downloadCreditNoteXML";
+import { deleteUnvalidatedCreditNote } from "./deleteUnvalidatedCreditNote";
 
 class CreditNotesModule {
   public readonly getToken: GetToken;
@@ -42,7 +43,7 @@ class CreditNotesModule {
 
   // Eliminar Nota Crédito no validada
   async deleteUnvalidatedCreditNote(reference_code: string) {
-    // Implementación pendiente
+    return deleteUnvalidatedCreditNote(this, reference_code);
   }
 }
 

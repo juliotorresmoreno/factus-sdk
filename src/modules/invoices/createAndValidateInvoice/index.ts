@@ -1,6 +1,7 @@
-import { ApiConfig } from "@/types/api";
+import { ApiConfig, ErrorResponse } from "@/types/api";
 import { InvoiceDataRequest } from "./request";
 import { InvoiceDataResponse } from "./response";
+import { ApiError } from "@/error";
 
 export type { InvoiceDataRequest } from "./request";
 
@@ -21,8 +22,11 @@ export async function createAndValidateInvoice(
   });
 
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(`Invoice creation failed: ${res.status} - ${error}`);
+    const error: ErrorResponse = await res.json();
+    throw new ApiError(
+      res.status,
+      error.message ?? "Error deleting unvalidated invoice"
+    );
   }
 
   return await res.json();

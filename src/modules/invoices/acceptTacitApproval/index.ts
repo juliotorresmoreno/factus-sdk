@@ -1,5 +1,6 @@
-import { ApiConfig } from "@/types/api";
+import { ApiConfig, ErrorResponse } from "@/types/api";
 import { AcceptTacitApprovalResponse } from "./response";
+import { ApiError } from "@/error";
 
 export type AcceptTacitApprovalPayload = {
   identification_document_code: string;
@@ -30,8 +31,11 @@ export async function acceptTacitApproval(
   });
 
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(`Accept Tacit Approval failed: ${res.status} - ${error}`);
+    const error: ErrorResponse = await res.json();
+    throw new ApiError(
+      res.status,
+      error.message ?? "Error deleting unvalidated invoice"
+    );
   }
 
   return await res.json();

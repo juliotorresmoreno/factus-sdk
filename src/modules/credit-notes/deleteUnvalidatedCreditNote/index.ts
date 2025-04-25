@@ -1,5 +1,6 @@
-import { ApiConfig } from "@/types/api";
+import { ApiConfig, ErrorResponse } from "@/types/api";
 import { DeleteUnvalidatedCreditNoteResponse } from "./response";
+import { ApiError } from "@/error";
 
 export async function deleteUnvalidatedCreditNote(
   config: ApiConfig,
@@ -9,7 +10,7 @@ export async function deleteUnvalidatedCreditNote(
   const url = `${config.getUrl()}/v1/credit-notes/reference/${noteId}`;
 
   const res = await fetch(url, {
-    method: "GET",
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -17,8 +18,11 @@ export async function deleteUnvalidatedCreditNote(
   });
 
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(`Error deleting credit note: ${error}`);
+    const error: ErrorResponse = await res.json();
+    throw new ApiError(
+      res.status,
+      error.message ?? "Error deleting unvalidated invoice"
+    );
   }
 
   return res.json();

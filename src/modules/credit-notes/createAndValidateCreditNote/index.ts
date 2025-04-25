@@ -1,6 +1,7 @@
-import { ApiConfig } from "@/types/api";
+import { ApiConfig, ErrorResponse } from "@/types/api";
 import { CreateAndValidateCreditNoteRequest } from "./request";
 import { CreateAndValidateCreditNoteResponse } from "./response";
+import { ApiError } from "@/error";
 
 export async function createAndValidateCreditNote(
   config: ApiConfig,
@@ -19,8 +20,11 @@ export async function createAndValidateCreditNote(
   });
 
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(`Create credit note failed: ${res.status} - ${error}`);
+    const error: ErrorResponse = await res.json();
+    throw new ApiError(
+      res.status,
+      error.message ?? "Error deleting unvalidated invoice"
+    );
   }
 
   return res.json();

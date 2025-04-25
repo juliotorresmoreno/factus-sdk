@@ -1,6 +1,7 @@
 // test/credit-notes.spec.ts
 
 import { FactusClient } from "@/client";
+import { ApiError } from "@/error";
 import { CreateAndValidateCreditNoteRequest } from "@/modules/credit-notes/createAndValidateCreditNote/request";
 import { config } from "dotenv";
 
@@ -95,5 +96,26 @@ describe("FactusClient - Credit Notes", () => {
     expect(response.status).toBe("OK");
     expect(response.message).toBe("Solicitud exitosa");
     expect(response.data).toBeDefined();
+  });
+
+  it("should download credit note XML successfully", async () => {
+    const response = await client.creditNotes.downloadCreditNoteXML("NC145");
+
+    expect(response).toHaveProperty("status");
+    expect(response).toHaveProperty("message");
+    expect(response).toHaveProperty("data");
+    expect(response.status).toBe("OK");
+    expect(response.message).toBe("Solicitud exitosa");
+    expect(response.data).toBeDefined();
+  });
+
+  it("should delete unvalidated credit note successfully", async () => {
+    await client.creditNotes
+      .deleteUnvalidatedCreditNote("J10-4")
+      .catch((error: ApiError) => {
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toBe("No se encontró el documento con código de referencia J10-4");
+        expect(error.status).toBe(404);
+      });
   });
 });

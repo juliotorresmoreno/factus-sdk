@@ -1,4 +1,5 @@
-import { ApiConfig } from "@/types/api";
+import { ApiError } from "@/error";
+import { ApiConfig, ErrorResponse } from "@/types/api";
 
 export async function downloadInvoice(
   config: ApiConfig,
@@ -7,13 +8,21 @@ export async function downloadInvoice(
   const token = await config.getToken();
   const url = `${config.getUrl()}/v1/bills/download-pdf/${invoiceId}`;
 
-  return fetch(url, {
+  const res = await fetch(url, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-  }).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch invoice");
-    return res.json();
   });
+
+  if (!res.ok) {
+    const error: ErrorResponse = await res.json();
+    throw new ApiError(
+      res.status,
+      error.message ?? "Error deleting unvalidated invoice"
+    );
+  }
+
+  return await res.json();
 }

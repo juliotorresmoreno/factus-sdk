@@ -1,5 +1,6 @@
-import { ApiConfig } from "@/types/api";
+import { ApiConfig, ErrorResponse } from "@/types/api";
 import { GetCreditNotesResponse } from "./response";
+import { ApiError } from "@/error";
 
 export async function getCreditNotes(
   config: ApiConfig
@@ -16,8 +17,11 @@ export async function getCreditNotes(
   });
 
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(`Error fetching credit notes: ${error}`);
+    const error: ErrorResponse = await res.json();
+    throw new ApiError(
+      res.status,
+      error.message ?? "Error deleting unvalidated invoice"
+    );
   }
 
   return res.json();

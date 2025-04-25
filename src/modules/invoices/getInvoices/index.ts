@@ -1,5 +1,6 @@
-import { ApiConfig } from "@/types/api";
+import { ApiConfig, ErrorResponse } from "@/types/api";
 import { InvoiceListResponse } from "./response";
+import { ApiError } from "@/error";
 
 export type { InvoiceListResponse } from "./response";
 
@@ -39,8 +40,11 @@ export async function getInvoices(
   });
 
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(`Fetching invoices failed: ${res.status} - ${error}`);
+    const error: ErrorResponse = await res.json();
+    throw new ApiError(
+      res.status,
+      error.message ?? "Error deleting unvalidated invoice"
+    );
   }
 
   return await res.json();
