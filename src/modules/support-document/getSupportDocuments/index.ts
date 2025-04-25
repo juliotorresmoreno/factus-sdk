@@ -1,10 +1,8 @@
 import { ApiConfig, ErrorResponse } from "@/types/api";
-import { GetInvoiceListResponse } from "./response";
 import { ApiError } from "@/error";
+import { GetSupportDocumentListResponse } from "./response";
 
-export type { GetInvoiceListResponse } from "./response";
-
-export type InvoiceFilters = {
+export type SupportDocumentFilters = {
   identification?: string;
   names?: string;
   number?: string;
@@ -14,15 +12,15 @@ export type InvoiceFilters = {
   page?: number;
 };
 
-export async function getInvoices(
+export async function getSupportDocuments(
   config: ApiConfig,
-  filters: InvoiceFilters = {}
-): Promise<GetInvoiceListResponse> {
+  filters: SupportDocumentFilters = {}
+): Promise<GetSupportDocumentListResponse> {
   const token = await config.getToken();
-  const url = new URL(`${config.getUrl()}/v1/bills`);
+  const url = new URL(`${config.getUrl()}/v1/support-documents`);
 
   Object.entries(filters).forEach(([key, value]) => {
-    if (value !== undefined) {
+    if (value !== undefined && key !== "page") {
       url.searchParams.append(`filter[${key}]`, value.toString());
     }
   });
@@ -31,7 +29,7 @@ export async function getInvoices(
     url.searchParams.append("page", filters.page.toString());
   }
 
-  const res = await fetch(url.toString(), {
+  const response = await fetch(url.toString(), {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -39,13 +37,13 @@ export async function getInvoices(
     },
   });
 
-  if (!res.ok) {
-    const error: ErrorResponse = await res.json();
+  if (!response.ok) {
+    const error: ErrorResponse = await response.json();
     throw new ApiError(
-      res.status,
-      error.message ?? "Error deleting unvalidated invoice"
+      response.status,
+      error.message ?? "Failed to fetch support documents"
     );
   }
 
-  return await res.json();
+  return await response.json();
 }

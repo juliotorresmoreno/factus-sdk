@@ -1,0 +1,29 @@
+import { ApiConfig, ErrorResponse } from "@/types/api";
+import { DownloadSupportDocumentPDFResponse } from "./response";
+import { ApiError } from "@/error";
+
+export async function downloadSupportDocumentPDF(
+  config: ApiConfig,
+  documentId: string
+): Promise<DownloadSupportDocumentPDFResponse> {
+  const token = await config.getToken();
+  const url = `${config.getUrl()}/v1/support-documents/download-pdf/${documentId}`;
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const error: ErrorResponse = await response.json();
+    throw new ApiError(
+      response.status,
+      error.message ?? "Failed to fetch support documents"
+    );
+  }
+
+  return await response.json();
+}

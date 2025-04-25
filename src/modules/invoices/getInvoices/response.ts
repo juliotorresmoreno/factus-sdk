@@ -1,4 +1,4 @@
-export interface InvoiceListResponse {
+export interface GetInvoiceListResponse {
   status: string;
   message: string;
   data: DataWrap;

@@ -1,5 +1,6 @@
 import { createCreditNotesModule } from "./modules/credit-notes";
 import { createInvoicesModule } from "./modules/invoices";
+import { createSupportDocumentsModule } from "./modules/support-document";
 
 export interface AuthConfig {
   url: string;
@@ -29,6 +30,11 @@ export class FactusClient {
   );
 
   public creditNotes = createCreditNotesModule(
+    () => this.getToken(),
+    () => this.config.url
+  );
+
+  public supportDocuments = createSupportDocumentsModule(
     () => this.getToken(),
     () => this.config.url
   );
