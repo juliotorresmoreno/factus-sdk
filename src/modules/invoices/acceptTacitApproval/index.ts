@@ -34,7 +34,8 @@ export async function acceptTacitApproval(
     const error: ErrorResponse = await res.json();
     throw new ApiError(
       res.status,
-      error.message ?? "Error deleting unvalidated invoice"
+      error.message ?? "Error deleting unvalidated invoice",
+      error.data
     );
   }
 

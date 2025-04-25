@@ -1,16 +1,18 @@
 import { ApiConfig, ErrorResponse } from "@/types/api";
-import { GetSupportDocumentsResponse } from "./response";
 import { ApiError } from "@/error";
+import { DeleteUnvalidatedAdjustmentNoteResponse } from "./response";
 
-export async function getSupportDocument(
+export async function deleteUnvalidatedAdjustmentNote(
   config: ApiConfig,
-  documentId: string
-): Promise<GetSupportDocumentsResponse> {
+  reference_code: string
+): Promise<DeleteUnvalidatedAdjustmentNoteResponse> {
   const token = await config.getToken();
-  const url = `${config.getUrl()}/v1/support-documents/show/${documentId}`;
+  const url = new URL(
+    `${config.getUrl()}/v1/adjustment-notes/reference/${reference_code}`
+  );
 
   const response = await fetch(url.toString(), {
-    method: "GET",
+    method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",
@@ -21,8 +23,7 @@ export async function getSupportDocument(
     const error: ErrorResponse = await response.json();
     throw new ApiError(
       response.status,
-      error.message ?? "Failed to fetch support documents",
-      error.data
+      error.message ?? "Failed to fetch adjustment notes"
     );
   }
 

@@ -26,7 +26,8 @@ export async function createAndValidateSupportDocument(
     const error: ErrorResponse = await res.json();
     throw new ApiError(
       res.status,
-      error.message ?? "Error creating and validating support document"
+      error.message ?? "Error creating and validating support document",
+      error.data
     );
   }
 

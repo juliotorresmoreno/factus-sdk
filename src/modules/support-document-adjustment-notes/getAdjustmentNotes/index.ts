@@ -1,8 +1,8 @@
 import { ApiConfig, ErrorResponse } from "@/types/api";
 import { ApiError } from "@/error";
-import { GetSupportDocumentListResponse } from "./response";
+import { GetAdjustmentNoteListResponse } from "./response";
 
-export type SupportDocumentFilters = {
+export type AdjustmentNoteFilters = {
   identification?: string;
   names?: string;
   number?: string;
@@ -12,12 +12,12 @@ export type SupportDocumentFilters = {
   page?: number;
 };
 
-export async function getSupportDocuments(
+export async function getAdjustmentNotes(
   config: ApiConfig,
-  filters: SupportDocumentFilters = {}
-): Promise<GetSupportDocumentListResponse> {
+  filters: AdjustmentNoteFilters = {}
+): Promise<GetAdjustmentNoteListResponse> {
   const token = await config.getToken();
-  const url = new URL(`${config.getUrl()}/v1/support-documents`);
+  const url = new URL(`${config.getUrl()}/v1/adjustment-notes`);
 
   Object.entries(filters).forEach(([key, value]) => {
     if (value !== undefined && key !== "page") {
@@ -41,8 +41,7 @@ export async function getSupportDocuments(
     const error: ErrorResponse = await response.json();
     throw new ApiError(
       response.status,
-      error.message ?? "Failed to fetch support documents",
-      error.data
+      error.message ?? "Failed to fetch adjustment notes"
     );
   }
 

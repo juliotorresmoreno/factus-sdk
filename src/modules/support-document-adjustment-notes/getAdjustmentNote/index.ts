@@ -1,13 +1,13 @@
 import { ApiConfig, ErrorResponse } from "@/types/api";
-import { GetSupportDocumentsResponse } from "./response";
 import { ApiError } from "@/error";
+import { GetAdjustmentNoteResponse } from "./response";
 
-export async function getSupportDocument(
+export async function getAdjustmentNote(
   config: ApiConfig,
-  documentId: string
-): Promise<GetSupportDocumentsResponse> {
+  noteId: string
+): Promise<GetAdjustmentNoteResponse> {
   const token = await config.getToken();
-  const url = `${config.getUrl()}/v1/support-documents/show/${documentId}`;
+  const url = new URL(`${config.getUrl()}/v1/adjustment-notes/${noteId}`);
 
   const response = await fetch(url.toString(), {
     method: "GET",
@@ -21,8 +21,7 @@ export async function getSupportDocument(
     const error: ErrorResponse = await response.json();
     throw new ApiError(
       response.status,
-      error.message ?? "Failed to fetch support documents",
-      error.data
+      error.message ?? "Failed to fetch adjustment notes"
     );
   }
 

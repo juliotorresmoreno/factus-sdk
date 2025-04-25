@@ -6,7 +6,7 @@ import { config } from "dotenv";
 
 config();
 
-describe("FactusClient - Invoices", () => {
+describe("FactusClient - Support Documents", () => {
   let client: FactusClient;
 
   beforeEach(async () => {

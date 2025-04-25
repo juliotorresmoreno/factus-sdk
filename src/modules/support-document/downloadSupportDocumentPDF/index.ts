@@ -21,7 +21,8 @@ export async function downloadSupportDocumentPDF(
     const error: ErrorResponse = await response.json();
     throw new ApiError(
       response.status,
-      error.message ?? "Failed to fetch support documents"
+      error.message ?? "Failed to fetch support documents",
+      error.data
     );
   }
 
