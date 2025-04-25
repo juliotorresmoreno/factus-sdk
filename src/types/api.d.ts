@@ -5,3 +5,8 @@ export type ApiConfig = {
   getToken: GetToken;
   getUrl: GetBaseUrl;
 };
+
+export type ErrorResponse = {
+  status: string;
+  message: string;
+};

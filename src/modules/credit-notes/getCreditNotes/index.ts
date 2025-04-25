@@ -1,12 +1,11 @@
 import { ApiConfig } from "@/types/api";
-import { GetCreditNoteResponse } from "./response";
+import { GetCreditNotesResponse } from "./response";
 
-export async function getCreditNote(
-  config: ApiConfig,
-  noteId: string
-): Promise<GetCreditNoteResponse> {
+export async function getCreditNotes(
+  config: ApiConfig
+): Promise<GetCreditNotesResponse> {
   const token = await config.getToken();
-  const url = `${config.getUrl()}/v1/credit-notes/${noteId}`;
+  const url = `${config.getUrl()}/v1/credit-notes`;
 
   const res = await fetch(url, {
     method: "GET",
@@ -18,7 +17,7 @@ export async function getCreditNote(
 
   if (!res.ok) {
     const error = await res.text();
-    throw new Error(`Error fetching credit note: ${error}`);
+    throw new Error(`Error fetching credit notes: ${error}`);
   }
 
   return res.json();

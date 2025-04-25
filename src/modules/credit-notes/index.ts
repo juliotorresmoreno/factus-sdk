@@ -1,6 +1,10 @@
 import { GetBaseUrl, GetToken } from "@/types/api";
 import { CreateAndValidateCreditNoteRequest } from "./createAndValidateCreditNote/request";
 import { createAndValidateCreditNote } from "./createAndValidateCreditNote";
+import { getCreditNotes } from "./getCreditNotes";
+import { getCreditNote } from "./getCreditNote";
+import { downloadCreditNotePDF } from "./downloadCreditNotePDF";
+import { downloadCreditNoteXML } from "./downloadCreditNoteXML";
 
 class CreditNotesModule {
   public readonly getToken: GetToken;
@@ -17,27 +21,27 @@ class CreditNotesModule {
   }
 
   // Ver Nota Crédito
-  async getCreditNote(noteId: string) {
-    // Implementación pendiente
+  async getCreditNotes() {
+    return getCreditNotes(this);
   }
 
   // Listar Notas Crédito
-  async getCreditNotes(filter: any) {
-    // Implementación pendiente
+  async getCreditNote(noteId: string) {
+    return getCreditNote(this, noteId);
   }
 
   // Descargar PDF Nota Crédito
   async downloadCreditNotePDF(noteId: string) {
-    // Implementación pendiente
+    return downloadCreditNotePDF(this, noteId);
   }
 
   // Descargar XML Nota Crédito
   async downloadCreditNoteXML(noteId: string) {
-    // Implementación pendiente
+    return downloadCreditNoteXML(this, noteId);
   }
 
   // Eliminar Nota Crédito no validada
-  async deleteUnvalidatedCreditNote(noteId: string) {
+  async deleteUnvalidatedCreditNote(reference_code: string) {
     // Implementación pendiente
   }
 }

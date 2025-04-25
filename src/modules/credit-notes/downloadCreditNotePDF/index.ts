@@ -1,12 +1,12 @@
 import { ApiConfig } from "@/types/api";
-import { GetCreditNoteResponse } from "./response";
+import { DownloadCreditNotePDFResponse } from "./response";
 
-export async function getCreditNote(
+export async function downloadCreditNotePDF(
   config: ApiConfig,
   noteId: string
-): Promise<GetCreditNoteResponse> {
+): Promise<DownloadCreditNotePDFResponse> {
   const token = await config.getToken();
-  const url = `${config.getUrl()}/v1/credit-notes/${noteId}`;
+  const url = `${config.getUrl()}/v1/credit-notes/download-pdf/${noteId}`;
 
   const res = await fetch(url, {
     method: "GET",
@@ -18,7 +18,7 @@ export async function getCreditNote(
 
   if (!res.ok) {
     const error = await res.text();
-    throw new Error(`Error fetching credit note: ${error}`);
+    throw new Error(`Error downloading credit note PDF: ${error}`);
   }
 
   return res.json();
