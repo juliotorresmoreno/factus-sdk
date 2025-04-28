@@ -1,9 +1,9 @@
 export interface CreateAndValidateCreditNoteRequest {
   numbering_range_id?: number;
-  correction_concept_code: number; // Cambiado a número
-  customization_id: number; // Cambiado a número
-  bill_id: number; // Cambiado a número
-  reference_code: string; // Mantener como string ya que es un código
+  correction_concept_code: number;
+  customization_id: number;
+  bill_id: number;
+  reference_code: string;
   payment_method_code: string;
   observation?: string;
   items: CreditNoteItem[];
@@ -25,5 +25,5 @@ export interface CreditNoteItem {
 
 export interface WithholdingTax {
   code: string;
-  withholding_tax_rate: number; // Corregido el nombre del campo (anteriormente "withhoding_tax_rate")
+  withholding_tax_rate: number;
 }

@@ -26,7 +26,7 @@ export async function createAndValidateAdjustmentNote(
     const error: ErrorResponse = await res.json();
     throw new ApiError(
       res.status,
-      error.message ?? "Error creating and validating adjustment note"
+      error.message ?? "Error processing request",
     );
   }
 

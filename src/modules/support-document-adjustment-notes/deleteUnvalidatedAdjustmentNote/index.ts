@@ -23,7 +23,7 @@ export async function deleteUnvalidatedAdjustmentNote(
     const error: ErrorResponse = await response.json();
     throw new ApiError(
       response.status,
-      error.message ?? "Failed to fetch adjustment notes"
+      error.message ?? "Error processing request",
     );
   }
 
